@@ -1,4 +1,3 @@
-
 function randomGenerator(max){
 return Math.floor(Math.random() * max);
 
@@ -12,79 +11,111 @@ function getComputerChoice(){
     if (randomChoice === 0) {
         return "Rock";
     } else if (randomChoice === 1) {
-        return "Paper"
+        return "Paper";
     } else {
-        return "Scissor"
+        return "Scissor";
     }
 
-}
-
-function getHumanChoice(){
-    choice= prompt("Type R for Rock, S for Scissors and P for Paper");
-
-    if ( choice === "R") {
-        return "Rock"
-    } else if (choice === "S") {
-        return "Scissor" 
-    } else if (choice === "P") {
-        return "Paper"
-    } else{
-        prompt("Wrong Input! Try Again!")
-    }
 }
 
 let humanScore = 0;
 let computerScore = 0;
+let round = 0;
+const maxrounds = 5;
 
 function playRound(humanChoice, computerChoice) {
 
     if (humanChoice === "Paper" && computerChoice === "Rock") {
     ++humanScore;
+    
    return "You Win! Paper beats Rock!"
 } 
 else if (humanChoice === "Rock" && computerChoice === "Paper") {
     ++computerScore;
+
    return "You Lose! Paper beats Rock!"
 }
 else if (humanChoice === "Rock" && computerChoice === "Scissor") {
     ++humanScore;
+  
     return "You Win! Rock beats Scissor!"
 }
 else if (humanChoice === "Scissor" && computerChoice === "Rock")
 {
     ++computerScore;
+
     return "You Lose! Rock beats Scissor!"
 } else if (humanChoice === "Scissor" && computerChoice === "Paper") {
     ++humanScore;
+
     return "You Win! Scissor beats Paper!"
 } else if(humanChoice === "Paper" && computerChoice === "Scissor") {
     ++computerScore;
+
     return "You Lose! Scissor beats Paper!"
 } else if (humanChoice === computerChoice) {
     ++computerScore;
     ++humanScore;
+   
     return "TIE!"
 }
 }
 
-function playGame() {
+let roundStatus = document.querySelector(".round-status");
+let statusBar = document.querySelector(".status-bar");
 
-for ( let i = 0 ; i < 5; i++) {
-    let humanChoice = getHumanChoice();
+let scissorKey = document.querySelector("#scissor");
+scissorKey.addEventListener("click", () => {
+    if ( round === 5) {
+        return;
+    } else {
+    round++;
+    roundStatus.textContent = ` Time to Play! Round ${round} `; 
+    humanChoice = "Scissor";
+    playGame(humanChoice);
+}
+    
+});
+
+let rockKey = document.querySelector("#rock");
+rockKey.addEventListener("click", () => {
+    if ( round === 5) {
+        return;
+    } else {
+    round++;
+    roundStatus.textContent = ` Time to Play! Round ${round} `; 
+    humanChoice ="Rock";
+    playGame(humanChoice);
+    }
+  
+});
+
+let paperKey = document.querySelector("#paper");
+paperKey.addEventListener("click", () => {
+    if ( round === 5) {
+        return;
+    } else {
+    round++;
+    roundStatus.textContent = ` Time to Play! Round ${round} `; 
+    humanChoice = "Paper";
+    playGame(humanChoice);
+}
+   
+})
+
+function playGame(humanChoice) {
+    if ( round <= maxrounds) {
     let computerChoice = getComputerChoice();
-    console.log(`Time to Play! Round ${i+1}!`)
-    console.log(playRound(humanChoice,computerChoice));
-    console.log(`Scores: Computer: ${computerScore}, Human: ${humanScore}`);
+    statusBar.textContent = playRound(computerChoice,humanChoice);
+
+if ( round === maxrounds && humanScore < computerScore) {
+statusBar.textContent = "After 5 rounds Computer Wins! Pildi man ka Jo!";
+return;
+
+} else if (round === maxrounds && humanScore > computerScore) {
+    statusBar.textContent= "After 5 rounds You Win! Wow Nice Baby!";
+    return;
+}
+}
 }
 
-if (computerScore > humanScore) {
-    console.log("You Lost! Better Luck Next Time!")
-} else if (computerScore < humanScore) {
-    console.log("You Win! Congratulations!")
-} else if (computerScore === humanScore) {
-    console.log("It's a TIE!")
-}
-
-}
-
-playGame();
